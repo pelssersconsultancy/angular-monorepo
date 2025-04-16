@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @Component({
-  imports: [NxWelcomeComponent, RouterModule],
+  imports: [LayoutComponent],
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: ` <app-layout></app-layout>`,
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'angular-demo1';
-}
+export class AppComponent {}
