@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
-import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { HomeComponent } from './home/home.component';
+import { FormDemoComponent } from './form-demo/form-demo.component';
 
 export const appRoutes: Route[] = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'dynamic-form', component: DynamicFormComponent },
+  { path: 'form-demo', component: FormDemoComponent },
 ];

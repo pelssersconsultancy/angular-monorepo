@@ -12,9 +12,7 @@ import { RouterLink } from '@angular/router';
           <h1 class="text-xl font-bold">Angular demo 1</h1>
           <nav class="space-x-4">
             <a routerLink="/home" class="hover:underline">Home</a>
-            <a routerLink="/dynamic-form" class="hover:underline"
-              >Dynamic form</a
-            >
+            <a routerLink="/form-demo" class="hover:underline">Form demo</a>
           </nav>
         </div>
       </header>
