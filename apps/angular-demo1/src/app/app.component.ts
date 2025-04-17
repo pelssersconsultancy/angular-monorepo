@@ -6,9 +6,11 @@ import { RouterModule } from '@angular/router';
 @Component({
   imports: [LayoutComponent, RouterModule, RouterOutlet],
   selector: 'app-root',
-  template: ` <app-layout>
-    <router-outlet></router-outlet>
-  </app-layout>`,
+  template: `
+    <app-layout>
+      <router-outlet></router-outlet>
+    </app-layout>
+  `,
   styleUrl: './app.component.scss',
 })
 export class AppComponent {}
