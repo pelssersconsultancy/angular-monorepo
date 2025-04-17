@@ -1,37 +1,56 @@
-import { Component, HostBinding, input } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+// dynamic-form.component.ts
+import { Component, input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { TypedFormSchema } from './typed-form-schema.model';
+import { TypedFormBuilderService } from './typed-form-builder.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormStructure } from './form-structure';
 
 @Component({
-  imports: [MatCardModule, MatFormFieldModule],
   selector: 'app-dynamic-form',
   standalone: true,
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   template: `
-    <div>
-      <form class="mt-2">
-        <div class="flex flex-col gap-2">
-          @for (fieldGroup of formStructure().formFieldGroups; track
-          fieldGroup.id) {
-          <mat-card>
-            <mat-card-title>{{ fieldGroup.label }}</mat-card-title>
-            <mat-card-content>
-              <!-- @for (formField of fieldGroup.fields; track formField.id) {
-              <mat-form-field>
-                <mat-label>{{ formField.label }}</mat-label>
-              </mat-form-field>
-              } -->
-            </mat-card-content>
-          </mat-card>
-
-          }
-        </div>
-      </form>
-    </div>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="flex flex-col flex-start"
+    >
+      @for(field of schema(); track field.key) {
+      <mat-form-field appearance="fill">
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          matInput
+          [type]="field.type"
+          [formControlName]="field.key"
+          [placeholder]="field.placeholder ?? ''"
+        />
+      </mat-form-field>
+      }
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </form>
   `,
-  styles: ':host {  display: block; } ',
 })
-export class DynamicFormComponent {
-  @HostBinding('class') class = '';
-  readonly formStructure = input.required<FormStructure>();
+export class DynamicFormComponent<T extends object> implements OnInit {
+  schema = input.required<TypedFormSchema<T>>();
+
+  form!: FormGroup<{ [K in keyof T]: FormControl<T[K]> }>;
+
+  constructor(private formBuilder: TypedFormBuilderService) {}
+
+  ngOnInit(): void {
+    console.log('Schema:', this.schema());
+    this.form = this.formBuilder.buildForm(this.schema());
+    console.log(this.form);
+  }
+
+  submit(): void {
+    console.log('Submitted:', this.form.value);
+    if (this.form.valid) {
+      console.log('Submitted:', this.form.value);
+    } else {
+      console.warn('Invalid form');
+      console.log(this.form.errors);
+    }
+  }
 }
